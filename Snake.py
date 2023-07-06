@@ -4,11 +4,11 @@ from Classes import Text
 
 py.init()
 from time import sleep
-EV_FRUIT_EATEN = py.USEREVENT+1
 class Snake:
     def __init__(self, win : py.Surface):
         self.S = [[250, 250], [225, 250]]
         self.Score = 0
+        self.OnFruit = False
         self.GameOver = False
         self.Fruit = [[randint(0, 20)*25, randint(0, 20)*25] for i in range(10)]
         self.win = win
@@ -18,15 +18,15 @@ class Snake:
         for x in self.Fruit:
             py.draw.rect(self.win, (255, 0, 0), (x[0], x[1], 25, 25))
     def Move(self, Dir : int):
-        OnFruit = False
+        self.OnFruit = False
         for x in range(0, len(self.Fruit)):
             if self.Fruit[x] == self.S[0]:
                 self.Fruit[x] = [randint(0, 20)*25, randint(0, 20)*25]
-                OnFruit = True
+                self.OnFruit = True
                 self.Score += 1 
                 break
-        if OnFruit: 
-            self.S.append(self.S[0].copy())
+        if self.OnFruit: 
+            self.S.append(self.S[-1].copy())
         else:
             for x in range(len(self.S)-1, 0, -1):
                 self.S[x] = self.S[x-1].copy()
@@ -43,7 +43,6 @@ class Snake:
                 case 3:
                     if self.S[0][0] > 0: 
                         self.S[0][0] -= 25
-                
             for x in range(0, len(self.S)-1):
                 if(self.S.count(self.S[x]) != 1):
                     self.GameOver = True
@@ -82,12 +81,10 @@ def Main(win : py.Surface):
                 if ev.key == py.K_q: 
                     return -1
             if ev.type == py.USEREVENT:
-                if S.GameOver:
-                    return 1
                 S.Move(Dir)
-
-            if ev.type == EV_FRUIT_EATEN:
-                pass
+                if S.GameOver:
+                    return 0
+                
         S.Draw()
         py.display.flip()
 def Game_Over(win : py.Surface):
@@ -106,8 +103,8 @@ def Game_Over(win : py.Surface):
                 if ev.key == py.K_SPACE:
                     S.Reset()
                     return 1
-                else:
-                    return -2
+                elif ev.key == py.K_q:
+                    return -1
 def Play_Snake(win : py.Surface):
     py.time.set_timer(py.USEREVENT, 100)
     global S
