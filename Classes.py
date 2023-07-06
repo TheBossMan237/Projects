@@ -25,5 +25,14 @@ class Text:
             return None
     @property
     def Rend(self):
-        return (self.T, self.P)
-    
+        self.R = Rect(self.P, self.T.get_size())
+        return (self.T, self.R.topleft)
+    @property
+    def CenteredX(self):
+        self.R.centerx = 250
+        return (self.T, self.R.topleft)
+    @property
+    def CenteredY(self):
+        self.R.centerty = 250
+        return (self.T, self.R.topleft)
+
