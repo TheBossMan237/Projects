@@ -23,15 +23,17 @@ class P_Paddle(py.sprite.Sprite):
     def KeyUp(self, Key):
         try: self.Keys[Key] = False
         except : pass
-    def update(self, *args: Any, **kwargs: Any) -> None:
+    def update(self) -> None:
         if(self.Keys[py.K_s] and self.Y < 400): self.Y += self.Speed
         if(self.Keys[py.K_w] and self.Y > 0): self.Y -= self.Speed 
         self.rect.x = self.X
         self.rect.y = self.Y
         return self.X, self.Y
 class B_Paddle(py.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, IsPlayer = 1):
         py.sprite.Sprite.__init__(self)
+        self.IsPlayer = IsPlayer
+        self.Keys = {py.K_DOWN : False, py.K_UP : False}
         self.image = py.Surface((20, 100))
         self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
@@ -39,11 +41,19 @@ class B_Paddle(py.sprite.Sprite):
         self.Ball = None
         self.X = 470
         self.Y = 250
+    def KeyDown(self, Key : int):
+        if(self.IsPlayer == 2): self.Keys[Key] = True
+    def KeyUp(self, Key : int):
+        if(self.IsPlayer == 2): self.Keys[Key] = False
     def update(self):
         self.rect.x = self.X
         self.rect.y = self.Y
-        if(self.Ball.Y > self.Y and self.Y < 400): self.Y += self.Speed
-        if(self.Ball.Y < self.Y and self.Y > 0): self.Y -= self.Speed
+        if(self.IsPlayer == 2):
+            if(self.Keys[py.K_UP] and self.Y > 0): self.Y -= self.Speed * 2
+            if(self.Keys[py.K_DOWN] and self.Y < 400): self.Y += self.Speed * 2
+        else:
+            if(self.Ball.Y > self.Y and self.Y < 400): self.Y += self.Speed
+            if(self.Ball.Y < self.Y and self.Y > 0): self.Y -= self.Speed
         return self.X, self.Y
 class Ball(py.sprite.Sprite):
     def __init__(self, Player1, Player2, scores):
@@ -125,10 +135,10 @@ class Score(py.sprite.Sprite):
 
 
 
-def Main(win : py.Surface):
+def Main(win : py.Surface, PlayerCount : int):
     Scores = Score()
     Player = P_Paddle()
-    Bot = B_Paddle()
+    Bot = B_Paddle(PlayerCount)
     ball = Ball(Player, Bot, Scores)
     
     Divider = py.Surface((10, 500))
@@ -144,8 +154,11 @@ def Main(win : py.Surface):
                 case py.QUIT: return -2
                 case py.KEYDOWN: 
                     if ev.key == py.K_w or ev.key == py.K_s: Player.KeyDown(ev.key)
+                    if PlayerCount == 2 and (ev.key == py.K_UP or ev.key == py.K_DOWN): Bot.KeyDown(ev.key)
                     if ev.key == py.K_q: return -1
-                case py.KEYUP: Player.KeyUp(ev.key)
+                case py.KEYUP: 
+                    if ev.key == py.K_w or ev.key == py.K_s: Player.KeyUp(ev.key)
+                    if PlayerCount == 2 and (ev.key == py.K_UP or ev.key == py.K_DOWN): Bot.KeyUp(ev.key)
 
         Pl_Pos = Player.update()
         Ba_Pos = ball.update()
@@ -161,17 +174,21 @@ def Main(win : py.Surface):
 
 def Main_Menu(win : py.Surface):
     win.fill((0,0,0))
-    Texts = [Text("Pong",(250, 0)), Text("Start", (250, 100))]
+    Texts = [Text("Pong",(0, 0)), Text("1P", (0, 50)), Text("2P", (0, 80))]
     for x in Texts:
-        win.blit(*x.Rend)
+        win.blit(*x.CenteredX)
     py.display.update()
     while True:
         for ev in py.event.get():
             match ev.type:
                 case py.QUIT: return -2
                 case py.MOUSEBUTTONDOWN:
-                    if(Texts[1].Touching(py.mouse.get_pos())):
-                        return 1
+                    for x in Texts:
+                        X = x.Touching(py.mouse.get_pos())
+                        if(X == "1P"):
+                            return 1
+                        if(X == "2P"):
+                            return 2
                 case py.KEYDOWN:
                     if ev.key == py.K_q:
                         return -1
@@ -181,10 +198,12 @@ def Main_Menu(win : py.Surface):
 
     
 def Play_Pong(win : py.Surface):
+    PlayerCount = 1
     while True:
         State = Main_Menu(win)
         if(State < 0): return State
-        State = Main(win)
+        else: PlayerCount = State
+        State = Main(win, PlayerCount)
         if(State == -1): return State
 
 
