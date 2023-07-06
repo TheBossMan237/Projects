@@ -13,7 +13,7 @@ if __name__ == "__main__":
         "Play Pong" : Play_Pong 
     }
     for x in Texts:
-        win.blit(*x.Rend)
+        win.blit(*x.CenteredX)
     py.display.update()
     while True:
         for ev in py.event.get():
@@ -37,7 +37,7 @@ if __name__ == "__main__":
                     exit()
             win.fill((0,0,0))
             for x in Texts:
-                win.blit(*x.Rend)
+                win.blit(*x.CenteredX)
             py.display.update()
             Selected = None
 
