@@ -3,6 +3,7 @@ import pygame as py
 from random import random
 from math import pi, cos, sin
 from time import sleep, time
+from Classes import Text
 py.init()
 class P_Paddle(py.sprite.Sprite):
     def __init__(self):
@@ -15,7 +16,9 @@ class P_Paddle(py.sprite.Sprite):
         self.X = 5
         self.Y = 250
     def KeyDown(self, Key):
-        try: self.Keys[Key] = True
+        try: 
+            self.Keys[Key] = True
+
         except: pass
     def KeyUp(self, Key):
         try: self.Keys[Key] = False
@@ -122,8 +125,7 @@ class Score(py.sprite.Sprite):
 
 
 
-
-def Main():
+def Main(win : py.Surface):
     Scores = Score()
     Player = P_Paddle()
     Bot = B_Paddle()
@@ -134,13 +136,15 @@ def Main():
         py.draw.rect(Divider, (255, 255, 255), (0, x, 10, 40))
     ball.RandomDir360()
 
-    win = py.display.set_mode((500, 500))
+    
     while True:
         win.fill((0,0,0))
         for ev in py.event.get():
             match(ev.type):
-                case py.QUIT: return 0
-                case py.KEYDOWN: Player.KeyDown(ev.key)
+                case py.QUIT: return -2
+                case py.KEYDOWN: 
+                    if ev.key == py.K_w or ev.key == py.K_s: Player.KeyDown(ev.key)
+                    if ev.key == py.K_q: return -1
                 case py.KEYUP: Player.KeyUp(ev.key)
 
         Pl_Pos = Player.update()
@@ -155,8 +159,34 @@ def Main():
         win.blit(ball.image, Ba_Pos)
         py.display.flip()
 
-if __name__ == "__main__":
-    Main()
-    py.quit()
-    exit()
+def Main_Menu(win : py.Surface):
+    win.fill((0,0,0))
+    Texts = [Text("Pong",(250, 0)), Text("Start", (250, 100))]
+    for x in Texts:
+        win.blit(*x.Rend)
+    py.display.update()
+    while True:
+        for ev in py.event.get():
+            match ev.type:
+                case py.QUIT: return -2
+                case py.MOUSEBUTTONDOWN:
+                    if(Texts[1].Touching(py.mouse.get_pos())):
+                        return 1
+                case py.KEYDOWN:
+                    if ev.key == py.K_q:
+                        return -1
+
+
+
+
+    
+def Play_Pong(win : py.Surface):
+    while True:
+        State = Main_Menu(win)
+        if(State < 0): return State
+        State = Main(win)
+        if(State == -1): return State
+
+
+
     
