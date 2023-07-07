@@ -1,28 +1,52 @@
-from typing import overload, Tuple
+from typing import overload, Tuple, Union
 from pygame.font import Font
 from pygame.sprite import Sprite
 from pygame import Surface, Rect, Vector2
 class Text:
-    S = 0
+    S = 50
     @staticmethod
-    def DefualtSize(val : int):
-        Text.S = val
+    def DefualtSize(Size : int):
+        Text.S = Size
+
     @overload
-    def __init__(self,Size : int, _Text : str,Pos = (0,0), Color = (255, 255, 255)):
-        self.T = Font(None, Size).render(_Text, True, Color)
-        self._Text = _Text
-        self.P = Pos
-        self.R = Rect(Pos, self.T.get_size())
-    def __init__(self, _Text : str, Pos = (0,0), Color = (255, 255, 255)):
-        self.T = Font(None, Text.S).render(_Text, True, Color)
-        self._Text = _Text
-        self.P = Pos
-        self.R = Rect(Pos, self.T.get_size())
-    def Touching(self, Other : Tuple[int,int]): 
-        if(self.R.collidepoint(Other)):
-            return self._Text
+    def __init__(self, text : str, size : int, Pos : tuple, Color : tuple): ...
+    @overload
+    def __init__(self, text : str, size : int, Pos : tuple ): ...
+    @overload
+    def __init__(self, text : str, size : int): ...
+    @overload
+    def __init__(self, text : str, Pos : tuple): ...
+    @overload
+    def __init__(self, text : str): ...
+    def __init__(self, *Args):
+        L = len(Args)
+        match(len(Args)):
+            case 1: 
+                self.T = Font(None, Text.S).render(Args[0], True, (255, 255, 255))
+                self.P = (0, 0)
+            case 2: 
+                if(type(Args[1]) == int):
+                    self.T = Font(None, Args[1]).render(Args[0], True, (255, 255, 255))
+                    self.P = (0,0)
+                else: 
+                    self.T = Font(None, Text.S).render(Args[0], True, (255, 255, 255))
+                    self.P = Args[1]
+            case 3: 
+                self.T = Font(None, Args[1]).render(Args[0], True, (255, 255, 255))
+                self.P = Args[2]
+            case 4: 
+                self.T = Font(None, Args[1]).render(Args[0], True, Args[3])
+                self.P = Args[2]
+            case _: raise SyntaxError("More Args then Specificed")
+        self.text = Args[0]
+        self.R = Rect(self.P, self.T.get_size())
+    def Touching(self, Other : Union[Tuple[int, int], Rect]):
+        if(type(Other) == tuple):
+            if(self.R.collidepoint(Other)):
+                return self.text
         else:
-            return None
+            if(self.R.colliderect(Other)):
+                return self.text
     @property
     def Rend(self):
         self.R = Rect(self.P, self.T.get_size())
@@ -35,4 +59,5 @@ class Text:
     def CenteredY(self):
         self.R.centerty = 250
         return (self.T, self.R.topleft)
+    
 
