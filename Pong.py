@@ -4,7 +4,6 @@ from random import random
 from math import pi, cos, sin
 from time import sleep, time
 from Classes import Text
-py.init()
 class P_Paddle(py.sprite.Sprite):
     def __init__(self):
         py.sprite.Sprite.__init__(self)
@@ -32,6 +31,7 @@ class P_Paddle(py.sprite.Sprite):
 class B_Paddle(py.sprite.Sprite):
     def __init__(self, IsPlayer = 1):
         py.sprite.Sprite.__init__(self)
+        # 1 -> Its a CPU    2 -> Its a Player
         self.IsPlayer = IsPlayer
         self.Keys = {py.K_DOWN : False, py.K_UP : False}
         self.image = py.Surface((20, 100))
@@ -48,9 +48,11 @@ class B_Paddle(py.sprite.Sprite):
     def update(self):
         self.rect.x = self.X
         self.rect.y = self.Y
+        #If it is a human playing 
         if(self.IsPlayer == 2):
             if(self.Keys[py.K_UP] and self.Y > 0): self.Y -= self.Speed * 2
             if(self.Keys[py.K_DOWN] and self.Y < 400): self.Y += self.Speed * 2
+        #if its a CPU
         else:
             if(self.Ball.Y > self.Y and self.Y < 400): self.Y += self.Speed
             if(self.Ball.Y < self.Y and self.Y > 0): self.Y -= self.Speed

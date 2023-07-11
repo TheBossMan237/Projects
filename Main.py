@@ -2,15 +2,18 @@ import pygame as py
 win = py.display.set_mode((500, 500))
 from Pong import Play_Pong
 from Snake import Play_Snake
+from Simon import Play_Simon
 from Classes import Text
 
 if __name__ == "__main__":
+    py.init()
     Text.DefualtSize(50)
-    Texts = [Text("Select Game", (0,0)),Text("Play Snake", (0, 30)), Text("Play Pong", (0, 60))]
+    Texts = [Text("Select Game", (0,0)),Text("Play Snake", (0, 30)), Text("Play Pong", (0, 60)), Text("Play Simon", (0, 90))]
     Selected = None
     Games = {
         "Play Snake" : Play_Snake,
-        "Play Pong" : Play_Pong 
+        "Play Pong" : Play_Pong,
+        "Play Simon" : Play_Simon
     }
     for x in Texts:
         win.blit(*x.CenteredX)
@@ -40,8 +43,3 @@ if __name__ == "__main__":
                 win.blit(*x.CenteredX)
             py.display.update()
             Selected = None
-
-
-                    
-    py.quit()
-    exit()

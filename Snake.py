@@ -1,8 +1,6 @@
 import pygame as py
 from random import randint
 from Classes import Text
-
-py.init()
 from time import sleep
 class Snake:
     def __init__(self, win : py.Surface):

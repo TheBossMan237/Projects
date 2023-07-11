@@ -1,7 +1,6 @@
 from typing import overload, Tuple, Union
 from pygame.font import Font
-from pygame.sprite import Sprite
-from pygame import Surface, Rect, Vector2
+from pygame import Surface,Rect
 class Text:
     S = 50
     @staticmethod
