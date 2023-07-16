@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .Piano {
+            display: grid;
+            grid-template-columns: repeat(39, max-content);
+            grid-auto-rows: 100px;
+        }
+        .Sharp {
+            background-color: black;
+            width : 25px;
+            color: white;
+        }
+        .Normal {
+            background-color: white;
+            height : 150px;
+            width : 40px;
+        }
+        
+
+        
+    </style>
+<div class="Grid">
+</div>
+</head>
+<body>
+    
+    <div class="Piano">
+        <button class="Normal q" id="G1">q</button>
+        <button class="Sharp 1" id="GS1">1</button>
+        <button class="Normal w" id="A1">w</button>
+        <button class="Sharp 2" id="AS1">2</button>
+        <button class="Normal e" id="B1">e</button>
+        <button class="Normal r" id="C1">r</button>
+        <button class="Sharp 3" id="CS1">3</button>
+        <button class="Normal t" id="D1">t</button>
+        <button class="Sharp 4" id="DS1">4</button>
+        <button class="Normal y" id="E1">y</button>
+        <button class="Normal u" id="F1">u</button>
+        <button class="Sharp 5" id="FS1">5</button>
+
+        <button class="Normal i" id="G2">i</button>
+        <button class="Sharp 6" id="GS2">6</button>
+        <button class="Normal o" id="A2">o</button>
+        <button class="Sharp 7" id="AS2">7</button>
+        <button class="Normal p" id="B2">p</button>
+        <button class="Normal a" id="C2">a</button>
+        <button class="Sharp 8" id="CS2">8</button>
+        <button class="Normal s" id="D2">s</button>
+        <button class="Sharp 9" id="DS2">9</button>
+        <button class="Normal d" id="E2">d</button>
+        <button class="Normal f" id="F2">f</button>
+        <button class="Sharp 0" id="FS2">0</button>
+
+        <button class="Normal g" id="G3">g</button>
+        <button class="Sharp -" id="GS3">-</button>
+        <button class="Normal h" id="A3">h</button>
+        <button class="Sharp Equal" id="AS3">=</button>
+        <button class="Normal j" id="B3">j</button>
+        <button class="Normal k" id="C3">k</button>
+        <button class="Sharp l" id="CS3">l</button>
+        <button class="Normal z" id="D3">z</button>
+        <button class="Sharp x" id="DS3">x</button>
+        <button class="Normal c" id="E3">c</button>
+        <button class="Normal v" id="F3">v</button>
+        <button class="Sharp b" id="FS3">b</button>
+    </div>
+    <script src="jquery.js"></script>
+    <script>
+        let X = null
+        var keysdown = {};
+        let Minecraft = [""]
+        ws = new WebSocket("ws://127.0.0.1:8080", "Computer")
+        $ ("button").mousedown(function(ev) {
+            X = $ (this).attr("id")
+            ws.send(X)
+            $ (`#${X}`).mouseup(function(ev) {
+                ws.send(X)
+                $ (this).unbind("mouseup").unbind("mouseleave")
+            }).mouseleave(function(ev) {
+                ws.send(X)
+                $ (this).unbind("mouseup").unbind("mouseleave")
+            })
+        })
+        function KeyDown(ev) {
+            if(!(ev.key in keysdown)) {
+                if(ev.key == "=") {
+                    ws.send($ (".Equal").attr("id"))
+                    $(".Equal").css("background-color", "gray")
+
+                } else {
+                    ws.send($ (`.${ev.key}`).attr("id"))
+                    $(`.${ev.key}`).css("background-color", "gray")
+                }
+                keysdown[ev.key] = true;
+                
+                console.log(keysdown)
+            }
+        }
+        function KeyUp(ev) {
+            if(ev.key == "=") {
+                ws.send($ (".Equal").attr("id"))
+                $ (".Equal").css("background-color", "black")
+            } else {
+                ws.send($ (`.${ev.key}`).attr("id"))
+                if($ (`.${ev.key}`).hasClass("Sharp")) {
+                    $ (`.${ev.key}`).css("background-color", "black")
+                } else {
+                    $ (`.${ev.key}`).css("background-color", "white")
+                }
+            }
+            delete keysdown[ev.key]
+        }
+        window.addEventListener("keydown", KeyDown )   
+        window.addEventListener("keyup", KeyUp)
+
+    </script>
+</body>
+</html>
