@@ -4,7 +4,7 @@ from Pong import Play_Pong
 from Snake import Play_Snake
 from Simon import Play_Simon
 from Brick_Breaker import Play_Brick_Breaker
-from Classes import Text
+from Classes import *
 
 if __name__ == "__main__":
     py.init()

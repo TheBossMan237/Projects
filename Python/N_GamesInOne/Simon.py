@@ -103,4 +103,3 @@ def Play_Simon(win):
         if State < 0: return State
         State = Game_Over(win, State)
         if State < 0: return State
-
