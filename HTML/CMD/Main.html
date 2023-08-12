@@ -71,28 +71,46 @@
             Run:(/**@type {String}*/Value)=>{
                 let Str = "";
                 let Command = ""
-                let kwrgs = {}
-                let flags = []
-                console.log(RegExp("").exec(Value))
+                if(Value == "cd") Command = "cd";
                 if(Commands[Command] == undefined || typeof(Commands[Command]) != "function") {
                     return '"' + Command + '" ' + "is not recognized as a command"
                 } else {
-                    return Commands[Command]();
+                    Commands.Output.innerText = Commands[Command]();
                 }
             },
             cd:(Args)=>{
-                
+                return "111111111111111111\n\n\n"
             },
             
         }
         let Directory = {
             /**@type {String} */ dir:undefined,
-            /**@type {Number} */ length,
+            /**@type {Number} */ length:undefined,
+            /**@type {Object}*/ self:undefined,
+
             Init:()=>{
                 Directory.dir = "C:/>"
+                Directory.loc = ["C:"]
                 Directory.length = Directory.dir.length;
+                Directory.self = {"C:":{"Folder1" : {"Main.txt" : "Contents"}, "Folder2" : {}}, "D:":{}};
             },
-            Change:()=>{}
+            CD:(/**@type {String}*/Path)=>{
+                let t = Path.charAt(0) == "/" ? Directory.loc + Path : Path;
+                let Current = Directory.self;
+                t.split("/").forEach(function(val, ind) {
+                    
+                    console.log(Current, val);
+                    if(Current === undefined) return -1;
+                    Current = Current[val];
+                })
+                return Current;
+            },
+            NewDir(/**@type {String}*/ Path, FolderName) {
+                if(Directory.CD(Path) == -1) return
+                Directory.CD(Path)[FolderName] = {};
+            }
+
+
         }
         let text = {
             /**@type {HTMLSpanElement}*/self : undefined,
@@ -133,7 +151,7 @@
                 text.Codespace.append(e.cloneNode())
                 e.id = "";
 
-                text.Init(); Cursor.Init()
+                text.Init(); Cursor.Init(); Commands.Init();
             },
         }
         let Cursor = {
@@ -143,11 +161,12 @@
 
             Init:()=>{
                 Cursor.X = 0;
-                Cursor.Y = 0;
+                Cursor.Y = document.getElementById("Active").offsetTop;
                 Cursor.self = document.getElementById("Cursor");
             },
             Update:()=>{
                 Cursor.self.style.width = (Directory.length*text.spacing)+(Cursor.X*text.spacing) + "px";
+                Cursor.self.style.top = Cursor.Y + "px";
             },
             SetX:(Val)=>{Cursor.X = Val;}
         }
