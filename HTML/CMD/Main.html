@@ -15,8 +15,10 @@
             border  :1px solid black;
         }
         .Line {
+            white-space: nowrap;
+            overflow:visible;
             background-color: black;
-            width : 100%;
+            width : fit-content;
             height : 20px;
             font-family: monospace;
             font-size: 0px;
@@ -26,6 +28,7 @@
             border-bottom: 1px solid rgba(100, 100, 100, 1);
         }
         #Cursor {
+            
             position: absolute;
             border-right : 1px solid white;
             width: 0px;
@@ -38,12 +41,10 @@
             background-color: transparent;
         }
         span {
+            white-space:break-spaces;
             color : white;
             margin : 0px;
             font-size : 20px;
-        }
-        #Dir {
-            margin : 0px;
         }
 
 
@@ -54,55 +55,120 @@
     <div class="Con" id="Codespace">
         <div id="Cursor"></div>
         <div class="Line" id="Active">
-            <span id="Dir"></span>
+            <span></span>
             <span></span>
         </div>
+        <span id="Output"></span>
         
     </div>
-    <script src="Jquery.js"></script>
     <script>
+        let Commands = {
+            /**@type {HTMLSpanElement}*/ Output:undefined,
+            Init:()=>{
+                Commands.Output = document.getElementById("Output");
+            },
+            Output : document.getElementById("Output"),
+            Run:(/**@type {String}*/Value)=>{
+                let Str = "";
+                let Command = ""
+                let kwrgs = {}
+                let flags = []
+                console.log(RegExp("").exec(Value))
+                if(Commands[Command] == undefined || typeof(Commands[Command]) != "function") {
+                    return '"' + Command + '" ' + "is not recognized as a command"
+                } else {
+                    return Commands[Command]();
+                }
+            },
+            cd:(Args)=>{
+                
+            },
+            
+        }
         let Directory = {
-            dir:"C:/"
+            /**@type {String} */ dir:undefined,
+            /**@type {Number} */ length,
+            Init:()=>{
+                Directory.dir = "C:/>"
+                Directory.length = Directory.dir.length;
+            },
+            Change:()=>{}
+        }
+        let text = {
+            /**@type {HTMLSpanElement}*/self : undefined,
+            /**@type {HTMLDivElement}*/line : undefined,
+            /**@type {Number}*/spacing : undefined,
+            /**@type {HTMLSpanElement}*/Dir_elem : undefined,
+            /**@type {Number} */ length:undefined,
+            /**@type {HTMLDivElement}*/ Codespace:undefined,
+            Init:()=>{
+                text.spacing = document.getElementById("Width").clientWidth;
+                text.line = document.getElementById("Active");
+                text.Dir_elem = text.line.children.item(0);
+                text.self = text.line.children.item(1);
+                text.Dir_elem.innerText = Directory.dir;
+                text.length = 0;
+                text.Codespace = document.getElementById("Codespace")
+            },
+            Insert:(Char)=>{
+                text.self.innerText = text.self.innerText.slice(0, Cursor.X) + Char + text.self.innerText.slice(Cursor.X)
+                if(Cursor.X < text.self.innerText.length)Cursor.X++;
+                text.length++;
+            },
+            Delete:()=>{
+                if(text.self.innerText.length > 0 && Cursor.X > 0) {
+                    text.self.innerText = text.self.innerText.slice(0, Cursor.X-1) + text.self.innerText.slice(Cursor.X);
+                    if(Cursor.X > 0) Cursor.X--
+                    text.length--;
+                }
+            },
+            NewLine:() => {
+                text.line.id = "";
+                let e = document.createElement("div");
+                e.append(document.createElement("span")); e.append(document.createElement("span"))
+                e.id = "Active"; e.classList.add("Line")
+                text.Codespace.append(e);
+
+                e = document.getElementById("Output");
+                text.Codespace.append(e.cloneNode())
+                e.id = "";
+
+                text.Init(); Cursor.Init()
+            },
         }
         let Cursor = {
-            Pos:[Directory.dir.length,0],
-            self:document.getElementById("Cursor"),
-            Inc:()=>{if(Cursor.Pos[0] < text.length) {Cursor.Pos[0]++;}},
-            Dec:()=>{if(Cursor.Pos[0] > 0) {Cursor.Pos[0]--;}},
-            Update:()=>{Cursor.self.style.width = (Directory.dir.length*text.spacing)+(text.length*text.spacing)}
-        }
-        
-        let text = {
-            line:document.getElementById("Active"),
-            self:document.getElementById("Active").children.item(1 ),
-            Dir:document.getElementById("Dir"),
-            spacing:document.getElementById("Width").clientWidth,
-            length:0,
-            Insert:(Char)=>{
-                text.self.innerText = text.self.innerText.slice(0, Cursor.Pos) + Char + text.self.innerText.slice(Cursor.Pos);
-                length++;
-                Cursor.Inc();
-            },
-            Delete:(Char)=>{
-                1+1;
+            /**@type {Number}*/ X:undefined,
+            /**@type {Number}*/ Y:undefined,
+            /**@type {HTMLDivElement}*/ self:undefined,
+
+            Init:()=>{
+                Cursor.X = 0;
+                Cursor.Y = 0;
+                Cursor.self = document.getElementById("Cursor");
             },
             Update:()=>{
-                if(text.self.innerText.length) {
-
-                }
-                text.Dir.innerText = Directory.dir + ">";
-            }
+                Cursor.self.style.width = (Directory.length*text.spacing)+(Cursor.X*text.spacing) + "px";
+            },
+            SetX:(Val)=>{Cursor.X = Val;}
         }
+        Directory.Init(); text.Init(); Cursor.Init(); Cursor.Update();
         document.onkeydown = function(ev) {
             if(ev.key.length == 1) {
-                text.Insert(ev.key)
-            
-            
+                
+                text.Insert(ev.key);
+            } else {
+                switch(ev.key) {
+                    case "Backspace": text.Delete(); break;
+                    case "ArrowLeft":  if(Cursor.X > 0) {Cursor.SetX(Cursor.X-1)} break;
+                    case "ArrowRight": if(Cursor.X < text.length) {Cursor.SetX(Cursor.X+1)} break;
+                    case "Tab": text.Insert("    "); Cursor.SetX(Cursor.X+3); break;
+                    case "Enter": if(text.self.innerText != "") {Commands.Run(text.self.innerText); text.NewLine();} break;
+                }
+            }
+            Cursor.Update();
+            console.log(ev.key)
         }
-        Cursor.Update();
-        text.Update();
-        
-    }
+
         
         
 
