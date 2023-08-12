@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {margin:0px; background-color: black;}
+        #Settings {
+            position: absolute;
+            opacity: 30%;
+            height : 30px;
+            width : 100%;
+            background-color: black;
+            border  :1px solid black;
+        }
+        .Line {
+            background-color: black;
+            width : 100%;
+            height : 20px;
+            font-family: monospace;
+            font-size: 0px;
+        }
+        #Selected {
+            border-top : 1px solid rgba(100, 100, 100, 1);
+            border-bottom: 1px solid rgba(100, 100, 100, 1);
+        }
+        #Cursor {
+            position: absolute;
+            border-right : 1px solid white;
+            width: 0px;
+            left : 0em;
+            height : 20px;
+            font-size: 10px;
+            font-family:monospace;
+            padding : 0px;
+            margin : 0px;
+            background-color: transparent;
+        }
+        span {
+            color : white;
+            margin : 0px;
+            font-size : 20px;
+        }
+        #Dir {
+            margin : 0px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <span style="font-family:monospace; font-size:20px; position:absolute; color:transparent" id="Width">1</span>
+    <div class="Con" id="Codespace">
+        <div id="Cursor"></div>
+        <div class="Line" id="Active">
+            <span id="Dir"></span>
+            <span></span>
+        </div>
+        
+    </div>
+    <script src="Jquery.js"></script>
+    <script>
+        let Directory = {
+            dir:"C:/"
+        }
+        let Cursor = {
+            Pos:[Directory.dir.length,0],
+            self:document.getElementById("Cursor"),
+            Inc:()=>{if(Cursor.Pos[0] < text.length) {Cursor.Pos[0]++;}},
+            Dec:()=>{if(Cursor.Pos[0] > 0) {Cursor.Pos[0]--;}},
+            Update:()=>{Cursor.self.style.width = (Directory.dir.length*text.spacing)+(text.length*text.spacing)}
+        }
+        
+        let text = {
+            line:document.getElementById("Active"),
+            self:document.getElementById("Active").children.item(1 ),
+            Dir:document.getElementById("Dir"),
+            spacing:document.getElementById("Width").clientWidth,
+            length:0,
+            Insert:(Char)=>{
+                text.self.innerText = text.self.innerText.slice(0, Cursor.Pos) + Char + text.self.innerText.slice(Cursor.Pos);
+                length++;
+                Cursor.Inc();
+            },
+            Delete:(Char)=>{
+                1+1;
+            },
+            Update:()=>{
+                if(text.self.innerText.length) {
+
+                }
+                text.Dir.innerText = Directory.dir + ">";
+            }
+        }
+        document.onkeydown = function(ev) {
+            if(ev.key.length == 1) {
+                text.Insert(ev.key)
+            
+            
+        }
+        Cursor.Update();
+        text.Update();
+        
+    }
+        
+        
+
+
+    </script>
+</body>
+</html>
