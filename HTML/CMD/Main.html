@@ -45,6 +45,8 @@
             color : white;
             margin : 0px;
             font-size : 20px;
+            font-family: monospace;
+            user-select: none;
         }
 
 
@@ -61,25 +63,77 @@
         <span id="Output"></span>
         
     </div>
+    <script src="Path.js"></script>
     <script>
         let Commands = {
+            /**@type {Object}*/ List:undefined,
             /**@type {HTMLSpanElement}*/ Output:undefined,
             Init:()=>{
                 Commands.Output = document.getElementById("Output");
+                Commands.List = {
+                    "cd":1
+                }
             },
             Output : document.getElementById("Output"),
             Run:(/**@type {String}*/Value)=>{
                 let Str = "";
-                let Command = ""
+                let arr = Value.split(" ")
+                let Command = arr[0]
+                let Args = arr.slice(1)
+
+                
+
                 if(Value == "cd") Command = "cd";
                 if(Commands[Command] == undefined || typeof(Commands[Command]) != "function") {
-                    return '"' + Command + '" ' + "is not recognized as a command"
+                   Commands.Output.innerText = '"' + Value + '" ' + "is not recognized as a command"
                 } else {
-                    Commands.Output.innerText = Commands[Command]();
+                    Commands.Output.innerText = Commands[Command](Args);
                 }
             },
-            cd:(Args)=>{
-                return "111111111111111111\n\n\n"
+            cd:(/**@type {Array}*/Args)=>{
+                if(Args.length != 1) return "Invalid Syntax"
+                if(Args[0] == ".." && Directory.dir != "C:/>") {
+                    Directory.Update(Directory.dir.replace(">", "").split("/").slice(0, -1).toLocaleString() + "/>")
+                    Cursor.Update();
+                    return "\n";
+                }
+
+
+                let E = Directory.Get(Args[0]);
+                console.log(E);
+                if(E == -1) {
+                    if(!(Directory.Get(Directory.dir)[Args[0]] === undefined)) {
+                        console.log(1);
+                        Directory.Update(Directory.dir.replace(">", "") + Args[0] + ">");
+                        Cursor.Update();
+                        return "\n"
+                    }
+                    return (Args[0] + " is not a directory")
+
+                }
+                
+                
+                else Directory.Update(Args[0] + ">")
+                Cursor.Update()
+                return "\n";
+
+            },
+            mkdir:(/**@type {Array}*/ Args)=>{
+                
+                if(Args.length > 1) return "Invalid Syntax"
+                let t = Args[0];
+                for(let i = 0; i < t.length; i++) {
+                    if(t[i] == ">" || t[i] == "?" || t[i] == "+") return "Invalid Directory Name"
+                }
+                Directory.Get(Directory.dir)[Args[0]] = {}
+                return "\n"
+            },
+            dir:(/**@type {Array}*/ Args) => {
+                let Out = ""
+                for (let k in Directory.Get(Directory.dir)) {
+                    Out += k + "\n"
+                }
+                return Out + "\n"
             },
             
         }
@@ -92,22 +146,27 @@
                 Directory.dir = "C:/>"
                 Directory.loc = ["C:"]
                 Directory.length = Directory.dir.length;
-                Directory.self = {"C:":{"Folder1" : {"Main.txt" : "Contents"}, "Folder2" : {}}, "D:":{}};
+                Directory.self = {"C:" : {}}
+
             },
-            CD:(/**@type {String}*/Path)=>{
-                let t = Path.charAt(0) == "/" ? Directory.loc + Path : Path;
-                let Current = Directory.self;
-                t.split("/").forEach(function(val, ind) {
+            Update(NewDir) {
+                Directory.dir = NewDir;
+                Directory.length = Directory.dir.length
+            },
+            Get:(/**@type {String}*/ Path)=> {
+                let arr = undefined;
+                if(Path[Path.length-1] == ">") Path = Path.slice(0, Path.length-2); 
+                arr = Path.split("/")
+                
+                let Current = Directory.self[arr[0]]
+                if (Current === undefined) return -1;
+                for(let i = 1; i < arr.length; i++) {
+                    Current = Current[arr[i]]
+                    if(Current === undefined) return -1
                     
-                    console.log(Current, val);
-                    if(Current === undefined) return -1;
-                    Current = Current[val];
-                })
-                return Current;
-            },
-            NewDir(/**@type {String}*/ Path, FolderName) {
-                if(Directory.CD(Path) == -1) return
-                Directory.CD(Path)[FolderName] = {};
+                }
+
+                return Current
             }
 
 
@@ -146,11 +205,9 @@
                 e.append(document.createElement("span")); e.append(document.createElement("span"))
                 e.id = "Active"; e.classList.add("Line")
                 text.Codespace.append(e);
-
                 e = document.getElementById("Output");
                 text.Codespace.append(e.cloneNode())
                 e.id = "";
-
                 text.Init(); Cursor.Init(); Commands.Init();
             },
         }
@@ -173,7 +230,7 @@
         Directory.Init(); text.Init(); Cursor.Init(); Cursor.Update();
         document.onkeydown = function(ev) {
             if(ev.key.length == 1) {
-                
+
                 text.Insert(ev.key);
             } else {
                 switch(ev.key) {
@@ -185,7 +242,9 @@
                 }
             }
             Cursor.Update();
-            console.log(ev.key)
+        }
+        document.onkeyup = function(ev) {
+
         }
 
         
