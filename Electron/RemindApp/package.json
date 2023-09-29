@@ -1,15 +1,17 @@
 {
-  "name": "electron",
+  "name": "remindapp",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron": "^26.2.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.6"
   }
 }

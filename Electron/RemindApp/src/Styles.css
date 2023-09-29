@@ -1,0 +1,70 @@
+:root {
+    --Size:50px;
+}
+
+.Navbar {
+    position: relative;
+    left : 50%;
+    display: inline-block;
+    transform: translate(-50%);
+}
+.Navbar *{
+    display: inline-block;
+    
+}
+#Search {
+    height : var(--Size);
+    border-bottom: 1px solid black;
+    white-space: none;
+    margin-right : 50px;
+    background-color: rgb(200,200,200);
+    margin-bottom: 25px;
+}
+
+#Search input{
+    border : none;
+    outline: none;
+    height : var(--Size);
+    padding:0;margin:0;
+}
+#Search button {
+    background-color: transparent;  
+    border:none;
+    vertical-align: middle;
+    margin:0;
+    line-height: var(--Size);
+    text-align: center;
+    padding:0;
+    width : var(--Size);
+    height : var(--Size);
+}
+#AddElem {
+    width : 50px;
+    aspect-ratio: 1/1;
+    margin-top:50px;
+}
+
+#Content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.Reminder {
+    border-bottom: 1px solid black;
+    border-top:1px solid black;
+    width : fit-content;
+    position: relative;
+    display: flex;
+    vertical-align: center;
+    text-align: center;
+}
+.Reminder * {
+    margin:0;padding:0;
+    height:calc(var(--Size) / 2);
+    border : none;   
+    border-left:1px solid black;
+    border-right:1px solid black;
+    outline:none
+}
+
