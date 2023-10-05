@@ -1,0 +1,82 @@
+{
+    "Search": {
+        "scope": "html,htmx",
+        "prefix": "&search",
+        "description": "\ud83d\udd0d",
+        "body": [
+            "&#x1f50d;&#xFE0E;"
+        ]
+    },
+    "Home": {
+        "scope": "html,htmx",
+        "prefix": "&home",
+        "description": "\ud83c\udfe0",
+        "body": [
+            "&#x1f3e0;&#xFE0E;"
+        ]
+    },
+    "Hazard": {
+        "scope": "html,htmx",
+        "prefix": "&hazard",
+        "description": "\u2623",
+        "body": [
+            "&#x2623;&#xFE0E;"
+        ]
+    },
+    "Nuke": {
+        "scope": "html,htmx",
+        "prefix": "&nuke",
+        "description": "\u2622",
+        "body": [
+            "&#x2622;&#xFE0E;"
+        ]
+    },
+    "Atom": {
+        "scope": "html,htmx",
+        "prefix": "&atom",
+        "description": "\u269b",
+        "body": [
+            "&#x269b;&#xFE0E;"
+        ]
+    },
+    "Voltage": {
+        "scope": "html,htmx",
+        "prefix": "&voltage",
+        "description": "\u26a1",
+        "body": [
+            "&#x26a1;&#xFE0E;"
+        ]
+    },
+    "Fullscreen": {
+        "scope": "html,htmx",
+        "prefix": "&fullscreen",
+        "description": "\u26f6",
+        "body": [
+            "&#x26f6;&#xFE0E;"
+        ]
+    },
+    "Sun": {
+        "scope": "html,htmx",
+        "prefix": "&sun",
+        "description": "\u2600",
+        "body": [
+            "&#x2600;&#xFE0E;"
+        ]
+    },
+    "Death": {
+        "scope": "html,htmx",
+        "prefix": "&death",
+        "description": "\u2620",
+        "body": [
+            "&#x2620;&#xFE0E;"
+        ]
+    },
+    "Moon": {
+        "scope": "html,htmx",
+        "prefix": "&moon",
+        "description": "\ud83c\udf19",
+        "body": [
+            "&#x1f319;&#xFE0E;"
+        ]
+    }
+}
