@@ -21,5 +21,14 @@
     "OpenLock" : "🔓",
     "Bell" : "🔔",
     "NoBell" : "🔕",
-    "Earth" : "🌎"
+    "Earth" : "🌎",
+    "Settings" : "⚙",
+    "Tempature" : "🌡",
+    "Pause" : "⏸",
+    "Stop" : "⏹",
+    "Shuffle" : "🔀",
+    "Inbox" : "📥",
+    "Folder" : "📁",
+    "Save" : "💾",
+    "Calander" : "📅"
 }
