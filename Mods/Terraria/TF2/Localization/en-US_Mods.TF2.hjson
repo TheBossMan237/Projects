@@ -1,0 +1,189 @@
+# This file will automatically update with entries for new content after a build and reload
+
+Items: {
+	bonesaw: {
+		DisplayName: bonesaw
+		Tooltip: ""
+	}
+
+	Pistol: {
+		Tooltip: ""
+		DisplayName: Pistol
+	}
+
+	Flamethrower: {
+		Tooltip: ""
+		DisplayName: Flamethrower
+	}
+
+	Bonesaw: {
+		Tooltip: ""
+		DisplayName: Bonesaw
+	}
+
+	Revolver: {
+		DisplayName: Revolver
+		Tooltip: ""
+	}
+
+	RocketLauncher: {
+		DisplayName: Rocket Launcher
+		Tooltip: ""
+	}
+
+	Shotgun: {
+		DisplayName: Shotgun
+		Tooltip: ""
+	}
+
+	flamethrower: {
+		DisplayName: flamethrower
+		Tooltip: ""
+	}
+
+	Wrench: {
+		DisplayName: Wrench
+		Tooltip: ""
+	}
+
+	CyclopsClassBag: {
+		DisplayName: Cyclops Class Bag
+		Tooltip: ""
+	}
+
+	EngineerClassBag: {
+		DisplayName: Engineer Class Bag
+		Tooltip: ""
+	}
+
+	HeavyClassBag: {
+		DisplayName: Heavy Class Bag
+		Tooltip: ""
+	}
+
+	MedicClassBag: {
+		DisplayName: Medic Class Bag
+		Tooltip: ""
+	}
+
+	PyroClassBag: {
+		DisplayName: Pyro Class Bag
+		Tooltip: ""
+	}
+
+	ScoutClassBag: {
+		DisplayName: Scout Class Bag
+		Tooltip: ""
+	}
+
+	SniperClassBag: {
+		DisplayName: Sniper Class Bag
+		Tooltip: ""
+	}
+
+	SoldierClassBag: {
+		DisplayName: Soldier Class Bag
+		Tooltip: ""
+	}
+
+	SpyClassBag: {
+		DisplayName: Spy Class Bag
+		Tooltip: ""
+	}
+
+	Bat: {
+		DisplayName: Bat
+		Tooltip: ""
+	}
+
+	DemomanClassBag: {
+		DisplayName: Demoman Class Bag
+		Tooltip: ""
+	}
+
+	Bottle: {
+		DisplayName: Bottle
+		Tooltip: ""
+	}
+
+	Fireaxe: {
+		DisplayName: Fireaxe
+		Tooltip: ""
+	}
+
+	MediGun: {
+		DisplayName: Medi Gun
+		Tooltip: ""
+	}
+
+	ScatterShotgun: {
+		DisplayName: Scatter Shotgun
+		Tooltip: ""
+	}
+
+	SniperRifle: {
+		DisplayName: Sniper Rifle
+		Tooltip: ""
+	}
+
+	Knife: {
+		DisplayName: Knife
+		Tooltip: ""
+	}
+
+	Shovel: {
+		DisplayName: Shovel
+		Tooltip: ""
+	}
+
+	Fists: {
+		DisplayName: Fists
+		Tooltip: ""
+	}
+
+	GrenadeLauncher: {
+		DisplayName: Grenade Launcher
+		Tooltip: ""
+	}
+
+	Minigun: {
+		DisplayName: Minigun
+		Tooltip: ""
+	}
+
+	StickyBombLauncher: {
+		DisplayName: Sticky Bomb Launcher
+		Tooltip: ""
+	}
+
+	SyringeGun: {
+		DisplayName: Syringe Gun
+		Tooltip: ""
+	}
+
+	Kukri: {
+		DisplayName: Kukri
+		Tooltip: ""
+	}
+
+	SMG: {
+		DisplayName: S M G
+		Tooltip: ""
+	}
+
+	MarketGardener: {
+		DisplayName: Market Gardener
+		Tooltip: ""
+	}
+}
+
+Projectiles: {
+	BonesawProj.DisplayName: Bonesaw Proj
+	flamethrowerProj.DisplayName: flamethrower Proj
+	FlamethrowerProj.DisplayName: Flamethrower Proj
+	HealBeamProj.DisplayName: Heal Beam Proj
+	SyringeProj.DisplayName: Syringe Proj
+	Rocket.DisplayName: Rocket
+}
+
+Keybinds.Reload.DisplayName: Reload
