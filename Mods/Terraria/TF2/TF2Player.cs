@@ -19,11 +19,14 @@ namespace TF2
         public string TF2Disguise = "";
         public bool IsDev = true;
         public bool isRed = false;
-        public void GiveItem(Item i, int slot=1) {Player.inventory[slot] = i; }
+        public NPC MouseOver; //CHANGE TO PLAYER 
+        public string heldItem;
+        public int Ammo;
+        public void GiveItem(Item i, int slot = 1) { Player.inventory[slot] = i; }
         public void GiveItem<T>(int slot = 0) where T : ModItem { Player.inventory[slot] = new Item(ModContent.ItemType<T>(), 1); }
-        public void GiveEquipment<T>(int slot = 3) where T : ModItem {Player.armor[slot] = new Item(ModContent.ItemType<T>(), 1); }
-        public void GiveEquipment(Item i, int slot = 3) { Player.armor[slot] = i;}
-        public void DeleteItem(int slot) {Player.inventory[slot] = new Item();}
+        public void GiveEquipment(Item i, int slot = 3) { Player.armor[slot] = i; }
+        public void GiveEquipment<T>(int slot = 3) where T : ModItem { Player.armor[slot] = new Item(ModContent.ItemType<T>(), 1); }
+        public void DeleteItem(int slot) { Player.inventory[slot] = new Item(); }
         public void GiveArmor(int item) {
             Player.bank.AddItemToShop(new Item(item));
             Player.armor[0] = Player.bank.item[0];
@@ -33,31 +36,35 @@ namespace TF2
                 Player.inventory[i] = new Item();
             }
         }
+        public override void PostItemCheck()
+        {
+            if (Player.HeldItem.Name != heldItem) {
+                heldItem = Player.HeldItem.Name;
+            }
+
+            base.PostItemCheck();
+        }
         public void ClearHotbar() {
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 10; i++) {
                 Player.inventory[i] = new Item();
             }
         }
         public void SpyInit() {
-            this.GiveItem(new Item(ModContent.ItemType<Revolver>()), 0);
-            this.GiveItem(new Item(ModContent.ItemType<DisguiseKit>()), 0);
+            GiveItem(new Item(ModContent.ItemType<Revolver>()), 0);
+            GiveItem(new Item(ModContent.ItemType<DisguiseKit>()), 0);
         }
-        
-        public override void OnEnterWorld()
-        {
-            if (Player.armor[3].Name != "") {
+
+        public void PlayerJoin() {
+            if (Player.armor[3].Name != ""){
                 TF2Class = Player.armor[3].Name.Split("Identifier")[0];
                 return;
             }
-            for (int i = 0; i < 10; i++) {
-                if (Player.inventory[i].Name != "") {
-
+            for (int i = 0; i < 10; i++){
+                if (Player.inventory[i].Name != ""){
                     return;
-
                 }
-                
             }
-            
+
             GiveItem<ScoutClassBag>(1);
             GiveItem<SoldierClassBag>(2);
             GiveItem<PyroClassBag>(3);
@@ -70,6 +77,29 @@ namespace TF2
 
 
             base.OnEnterWorld();
+        }
+        public override void OnEnterWorld(){
+            PlayerJoin();
+        }
+        public override void PostUpdate(){
+            PlayerJoin();
+            base.PostUpdate();
+        }
+        public override void PreUpdate(){
+           
+            //115
+
+            int x = (int)Main.MouseWorld.X;
+            int y = (int)Main.MouseWorld.Y;
+            MouseOver = null;
+            for (int i = 0; i < Main.npc.Length; i++) {
+                if (Main.npc[i].getRect().Contains(x, y)) {
+                    MouseOver = Main.npc[i];
+                    base.PreUpdate();
+                    return;
+                }
+            }
+            base.PreUpdate();
         }
     }
 }
