@@ -5,7 +5,6 @@ using TF2.Assets;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
-using TF2.Common.CustomTypes;
 using TF2;
 
 namespace TF2.Sniper
@@ -26,6 +25,7 @@ namespace TF2.Sniper
             Item.shoot = AmmoID.Bullet;
             Item.holdStyle = 0;
             Item.useStyle = ItemUseStyleID.Shoot;
+            Item.UseSound = Sounds.smg_shoot;
             Item.shootSpeed = 5f;
             Item.noMelee = true;
             Item.autoReuse = true;

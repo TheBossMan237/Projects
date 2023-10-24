@@ -21,6 +21,7 @@ namespace TF2.Medic
             TF2Player p = player.GetModPlayer<TF2Player>();
             p.ClearHotbar();
             p.GiveItem<MediGun>(0);
+            player.hair = 115;
             p.GiveItem<SyringeGun>(1);
             p.GiveItem<Bonesaw>(2);
             p.GiveEquipment(new Item(ItemID.FamiliarWig), 0);

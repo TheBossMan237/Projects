@@ -6,6 +6,8 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using System.Threading;
+using TF2.Assets;
+
 
 namespace TF2.Generic
 {
@@ -13,6 +15,7 @@ namespace TF2.Generic
     {
         public override void SetDefaults()
         {
+            Item.damage = 10;
             Item.width = 40;
             Item.height = 16;
             Item.shootSpeed = 5f;
@@ -21,7 +24,7 @@ namespace TF2.Generic
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = false;
             Item.shoot = ProjectileID.Bullet;
-            Item.UseSound = new SoundStyle($"{nameof(TF2)}/Assets/Sounds/shotgun_shoot");
+            Item.UseSound = Sounds.shotgun_shoot;
 
 
         }
@@ -32,7 +35,7 @@ namespace TF2.Generic
             {
                 Vector2 vel = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                 vel *= 1f - Main.rand.NextFloat(.3f);
-                Projectile.NewProjectileDirect(source, position, vel, type, damage, knockback);
+                Projectile.NewProjectileDirect(source, position, vel, type, Main.rand.Next(0,101) < 5 ? damage * 2 : damage, knockback);
             }
 
             return true;

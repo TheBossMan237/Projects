@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Audio;
+using TF2.Assets;
 
 namespace TF2.Generic
 {
@@ -18,7 +19,7 @@ namespace TF2.Generic
             Item.width = 42;
             Item.scale = .5f;
             Item.shootSpeed = 5f;
-            Item.UseSound = new SoundStyle($"{nameof(TF2)}/Assets/Sounds/pistol_shoot") { Volume = .25f };
+            Item.UseSound = Sounds.pistol_shoot;
             Item.autoReuse = false;
         }
         public override void AddRecipes()

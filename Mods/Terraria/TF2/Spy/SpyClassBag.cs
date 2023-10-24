@@ -16,14 +16,6 @@ namespace TF2.Spy
             Item.width = 32;
             Item.height = 32;
         }
-        public override void RightClick(Player player)
-        {
-
-            TF2Player p = player.GetModPlayer<TF2Player>();
-
-            p.SpyInit();
-            
-        }
         public override bool? UseItem(Player player)
         {
             TF2Player p = player.GetModPlayer<TF2Player>();

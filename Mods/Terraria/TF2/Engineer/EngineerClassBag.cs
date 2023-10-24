@@ -3,7 +3,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TF2.Generic;
-using TF2.Engineer
+using TF2.Engineer;
 
 namespace TF2.Engineer
 {
