@@ -3,7 +3,7 @@ using Terraria.DataStructures;
 using Terraria.ModLoader;
 namespace TF2.Proj
 {
-    internal class BlankBullet : ModProjectile
+    public class BlankBullet : ModProjectile
     {
         public override void OnSpawn(IEntitySource source)
         {

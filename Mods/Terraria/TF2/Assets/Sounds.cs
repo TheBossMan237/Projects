@@ -26,6 +26,7 @@ namespace TF2.Assets
         public static readonly SoundStyle medigun_heal = new SoundStyle(Path + "medigun_heal") { Volume = volume };
         public static readonly SoundStyle medigun_no_target = new SoundStyle(Path + "medigun_no_target") { Volume = volume};
         public static readonly SoundStyle smg_shoot = new SoundStyle(Path + "smg_shoot") { Volume = volume };
+        public static readonly SoundStyle flamethrower_shoot = new SoundStyle(Path + "flame_thrower_loop") { Volume = volume };
         //Shoot - Melee 
         public static readonly SoundStyle bat_hit = new SoundStyle(Path + "bat_hit") { Volume = volume };
         //Relaod

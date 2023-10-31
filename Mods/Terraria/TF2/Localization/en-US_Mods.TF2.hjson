@@ -1,11 +1,6 @@
 # This file will automatically update with entries for new content after a build and reload
 
 Items: {
-	bonesaw: {
-		DisplayName: bonesaw
-		Tooltip: ""
-	}
-
 	Pistol: {
 		Tooltip: ""
 		DisplayName: Pistol
@@ -113,7 +108,7 @@ Items: {
 
 	MediGun: {
 		DisplayName: Medi Gun
-		Tooltip: ""
+		Tooltip: Come over here! I promise I will heal you
 	}
 
 	ScatterShotgun: {
@@ -175,6 +170,56 @@ Items: {
 		DisplayName: Market Gardener
 		Tooltip: ""
 	}
+
+	SpyIdentifier: {
+		Tooltip: ""
+		DisplayName: Spy Identifier
+	}
+
+	DisguiseKit: {
+		Tooltip: ""
+		DisplayName: Disguise Kit
+	}
+
+	SoldierIdentifier: {
+		Tooltip: ""
+		DisplayName: Soldier Identifier
+	}
+
+	SniperIdentifier: {
+		Tooltip: ""
+		DisplayName: Sniper Identifier
+	}
+
+	ScoutIdentifier: {
+		Tooltip: ""
+		DisplayName: Scout Identifier
+	}
+
+	PyroIdentifier: {
+		Tooltip: ""
+		DisplayName: Pyro Identifier
+	}
+
+	MedicIdentifier: {
+		Tooltip: ""
+		DisplayName: Medic Identifier
+	}
+
+	HeavyIdentifier: {
+		Tooltip: ""
+		DisplayName: Heavy Identifier
+	}
+
+	EngineerIdentifier: {
+		Tooltip: ""
+		DisplayName: Engineer Identifier
+	}
+
+	DemomanIdentifier: {
+		Tooltip: ""
+		DisplayName: Demoman Identifier
+	}
 }
 
 Projectiles: {
@@ -184,6 +229,17 @@ Projectiles: {
 	HealBeamProj.DisplayName: Heal Beam Proj
 	SyringeProj.DisplayName: Syringe Proj
 	Rocket.DisplayName: Rocket
+	Bullet.DisplayName: Bullet
+	BlankBullet.DisplayName: Blank Bullet
 }
 
 Keybinds.Reload.DisplayName: Reload
+
+Buffs: {
+	HealEffect: {
+		Description: Mods.TF2.Buffs.HealEffect.Description
+		DisplayName: Heal Effect
+	}
+}
+
+UI.ExampleResource: Mods.TF2.UI.ExampleResource
