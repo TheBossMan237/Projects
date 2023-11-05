@@ -1,7 +1,8 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using TF2.Generic;
 using Terraria.ID;
+using TF2.Utills;
+
 namespace TF2.ClassItems {
     public class EngineerClassBag : ModItem
     {
@@ -40,24 +41,14 @@ namespace TF2.ClassItems {
             Item.accessory = true;
         }
     }
-    public class Wrench : ModItem
+    public class Wrench : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Engineer/" + Name;
 
         public override void SetDefaults()
         {
-            Item.damage = 65;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 60;
-            Item.height = 26;
-            Item.useTime = 45;
-            Item.useAnimation = 1;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = 2;
-            Item.UseSound = SoundID.Item7;
-            Item.autoReuse = true;
+            Item.CloneDefaults(ItemID.CopperBroadsword);
+            WeaponData(-1, -1, 48, -1, true);
         }
     }
 }

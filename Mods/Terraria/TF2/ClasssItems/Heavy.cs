@@ -3,7 +3,8 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using TF2.Generic;
+using TF2.Utills;
+
 namespace TF2.ClassItems
 {
     public class HeavyIdentifier : ModItem
@@ -41,49 +42,29 @@ namespace TF2.ClassItems
             return base.UseItem(player);
         }
     }
-    internal class Minigun : ModItem
+    internal class Minigun : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Heavy/" + Name;
-        public override void SetDefaults()
-        {
-            Item.damage = 14;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
-            Item.width = 56;
-            Item.height = 20;
-            Item.shoot = ProjectileID.Bullet;
-            Item.holdStyle = 0;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.shootSpeed = 5f;
-            Item.noMelee = true;
-            Item.autoReuse = true;
+        public override void SetDefaults(){
 
+            Item.shoot = ProjectileID.Bullet;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            WeaponData(200, -1, 1.575f, -1);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            if(!CanShoot()) return false;
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }
-    internal class Fists : ModItem
+    internal class Fists : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Heavy/" + Name;
         public override void SetDefaults()
         {
-            Item.scale = .5f;
-            Item.damage = 65;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 60;
-            Item.height = 26;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
-            Item.useStyle = ItemUseStyleID.Guitar;
-            Item.holdStyle = ItemHoldStyleID.HoldFront;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = 2;
-            Item.UseSound = SoundID.Item7;
-            Item.autoReuse = true;
+            Item.CloneDefaults(ItemID.Spear);
+            WeaponData(-1, -1, 48, -1, true);
         }
     }
 }

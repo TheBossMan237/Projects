@@ -3,29 +3,26 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using TF2.Generic;
 using TF2.Proj;
+using TF2.Utills;
+
 namespace TF2.ClassItems
 {
-    public class MarketGardener : ModItem {
-        public override string Texture => Mod.Name + "/Assets/Textures/Soldier/" + Name;
-    }
-    internal class Shovel : ModItem
-    {
+    public class MarketGardener : TF2Weapon {
         public override string Texture => Mod.Name + "/Assets/Textures/Soldier/" + Name;
         public override void SetDefaults()
         {
-            Item.damage = 65;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 60;
-            Item.height = 26;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = 2;
-            Item.autoReuse = true;
+            Item.CloneDefaults(ItemID.CopperBroadsword);
+            WeaponData(-1, -1, .96f, -1, true);
+            base.SetDefaults();
+        }
+    }
+    internal class Shovel : TF2Weapon
+    {
+        public override string Texture => Mod.Name + "/Assets/Textures/Soldier/" + Name;
+        public override void SetDefaults(){
+            Item.CloneDefaults(ItemID.CopperBroadsword);
+            WeaponData(-1, -1, .96f, -1, true);
         }
     }
     internal class SoldierClassBag : ModItem
@@ -62,24 +59,18 @@ namespace TF2.ClassItems
             Item.accessory = true;
         }
     }
-    internal class RocketLauncher : ModItem
+    internal class RocketLauncher : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Soldier/" + Name;
         public override void SetDefaults()
         {
-            Item.useTime = 1;
-            Item.useAnimation = 1;
-            Item.width = 54;
-            Item.height = 16;
             Item.shoot = ModContent.ProjectileType<Rocket>();
             Item.useStyle = ItemUseStyleID.Shoot;
-
-            Item.shootSpeed = 5f;
-            Item.noMelee = true;
-            Item.autoReuse = true;
+            WeaponData(4, 20, .8f, .92f);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            if(!CanShoot()) return false;
 
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

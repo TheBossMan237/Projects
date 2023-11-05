@@ -5,49 +5,47 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using TF2.Assets;
+using TF2.Utills;
 namespace TF2.ClassItems
 {
-    public class GrenadeLauncher : ModItem
-    {
+    public class GrenadeLauncher : TF2Weapon{
         public override string Texture => Mod.Name + "/Assets/Textures/Demoman/" + Name;
-        public override void SetDefaults()
-        {
+        public override void SetDefaults(){
+
             Item.shoot = ProjectileID.Grenade;
-            Item.useAnimation = 1;
-            Item.useTime = 1;
-            Item.autoReuse = true;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.shootSpeed = 5f;
+            WeaponData(4, 16, .6f, 1.24f);
 
         }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if(!CanShoot()) return false;
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
     }
-    public class StickyBombLauncher : ModItem
+    public class StickyBombLauncher : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Demoman/" + Name;
         public override void SetDefaults()
         {
             Item.shoot = ProjectileID.StickyGrenade;
-            Item.useAnimation = 1;
-            Item.useTime = 1;
-            Item.autoReuse = true;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.shootSpeed = 5f;
+            WeaponData(8, 24, .6f, 1.09f);
 
         }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if(!CanShoot()) return false;
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
     }
-    public  class Bottle : ModItem
+    public  class Bottle : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Demoman/" + Name;
         public override void SetDefaults()
         {
-            Item.damage = 65;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 60;
-            Item.height = 26;
-            Item.useTime = 45;
-            Item.useAnimation = 45;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.autoReuse = true;
+            Item.CloneDefaults(ItemID.CopperBroadsword);
+            WeaponData(-1, -1, 48, -1, true);
         }
     }
     public class DemomanClassBag : ModItem
@@ -62,18 +60,12 @@ namespace TF2.ClassItems
             Item.useAnimation = 1;
             Item.height = 32;
         }
+
         public override bool? UseItem(Player player)
         {
             TF2Player p = player.GetModPlayer<TF2Player>();
-            p.ClearHotbar();
-            p.GiveItem<GrenadeLauncher>(0);
-            p.GiveItem<StickyBombLauncher>(1);
-            p.GiveItem<Bottle>(2);
-            p.GiveEquipment(new Item(ItemID.EyePatch), 0);
-            p.GiveEquipment(new Item(ItemID.FamiliarShirt), 1);
-            p.GiveEquipment(new Item(ItemID.FamiliarPants), 2);
+            p.Loadout<GrenadeLauncher, StickyBombLauncher, Bottle, DemomanIdentifier>();
 
-            p.GiveEquipment<DemomanIdentifier>();
 
             return base.UseItem(player);
         }

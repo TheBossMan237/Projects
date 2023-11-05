@@ -1,32 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
-using TF2.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using TF2.Utills;
+
 namespace TF2.ClassItems
 {
-    internal class Bat : ModItem
+    internal class Bat : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Scout/" + Name;
         public override void SetDefaults()
         {
-            Item.damage = 65;
-            Item.DamageType = DamageClass.Melee;
-            Item.width = 60;
-            Item.height = 26;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
+            Item.CloneDefaults(ItemID.CopperBroadsword);
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 6;
-            Item.value = 10000;
-            Item.rare = 2;
-            Item.UseSound = SoundID.Item7;
+            WeaponData(-1, -1, .5f, -1, true);
+
+            
             Item.autoReuse = true;
         }
 
@@ -61,13 +51,12 @@ namespace TF2.ClassItems
     internal class ScoutIdentifier : ModItem
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Scout/" + Name;
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.accessory = true;
         }
     }
 
-    internal class ScatterShotgun : ModItem
+    internal class ScatterShotgun : TF2Weapon
     {
         public override string Texture => Mod.Name + "/Assets/Textures/Scout/" + Name;
         public override void SetDefaults()
@@ -75,16 +64,15 @@ namespace TF2.ClassItems
             Item.width = 40;
             Item.height = 16;
             Item.shootSpeed = 5f;
-            Item.useTime = 1;
-            Item.useAnimation = 1;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
             Item.shoot = ProjectileID.Bullet;
+            WeaponData(6, 32, .625f, .7f);
+            
 
 
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            if (!CanShoot()) return false;
             const int NumBullets = 8;
             for (int i = 0; i < NumBullets; i++)
             {
