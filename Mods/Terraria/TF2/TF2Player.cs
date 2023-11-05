@@ -1,27 +1,38 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
-using TF2.Spy;
-using TF2.Medic;
-using TF2.Sniper;
-using TF2.Pyro;
-using TF2.Engineer;
-using TF2.Scout;
-using TF2.Heavy;
-using TF2.Demoman;
-using TF2.Soldier;
+using TF2.ClassItems;
+using System.Reflection;
+using TF2.Utills;
+using Terraria.ModLoader.IO;
 
 namespace TF2
 {
     internal class TF2Player : ModPlayer
     {
+        public TagCompound AmmoData = new TagCompound();
         public string TF2Class = "";
         public string TF2Disguise = "";
         public bool IsDev = true;
         public bool isRed = false;
         public NPC MouseOver; //CHANGE TO PLAYER 
         public string heldItem;
-        public int Ammo;
+        public string AmmoText= "";
+        public void Loadout<Primary, Secondary, Melee, Identifier>() 
+            where Primary : ModItem 
+            where Secondary : ModItem 
+            where Melee : ModItem 
+            where Identifier : ModItem {
+            //Clear Inventory
+            for (int i = 0; i < Player.inventory.Length; i++) {
+                Player.inventory[i] = new Item();
+            }
+            Player.armor[3] = new Item(ModContent.ItemType<Identifier>(), 1);
+
+            Player.inventory[0] = new Item(ModContent.ItemType<Primary>(), 1);
+            Player.inventory[1] = new Item(ModContent.ItemType<Secondary>(), 1);
+            Player.inventory[2] = new Item(ModContent.ItemType<Melee>(), 1);   
+        }
         public void GiveItem(Item i, int slot = 1) { Player.inventory[slot] = i; }
         public void GiveItem<T>(int slot = 0) where T : ModItem { Player.inventory[slot] = new Item(ModContent.ItemType<T>(), 1); }
         public void GiveEquipment(Item i, int slot = 3) { Player.armor[slot] = i; }
@@ -40,6 +51,7 @@ namespace TF2
         {
             if (Player.HeldItem.Name != heldItem) {
                 heldItem = Player.HeldItem.Name;
+                
             }
 
             base.PostItemCheck();
@@ -47,6 +59,7 @@ namespace TF2
         public void ClearHotbar() {
             for (int i = 0; i < 10; i++) {
                 Player.inventory[i] = new Item();
+
             }
         }
         public void SpyInit() {
@@ -55,6 +68,7 @@ namespace TF2
         }
 
         public void PlayerJoin() {
+
             if (Player.armor[3].Name != ""){
                 TF2Class = Player.armor[3].Name.Split("Identifier")[0];
                 return;
@@ -82,7 +96,6 @@ namespace TF2
             PlayerJoin();
         }
         public override void PostUpdate(){
-            PlayerJoin();
             base.PostUpdate();
         }
         public override void PreUpdate(){
@@ -99,6 +112,17 @@ namespace TF2
                     return;
                 }
             }
+            if (Player.HeldItem.ModItem != null){
+                Player.HeldItem.ModItem.LoadData(AmmoData);
+                if (AmmoData.ContainsKey("AmmoInGun")) {
+                    Player.HeldItem.ModItem.LoadData(AmmoData);
+                    AmmoText = (AmmoData.GetInt("AmmoInGun") == -1 ? "-" : AmmoData.GetInt("AmmoInGun").ToString()) + "/" + (AmmoData.GetInt("AmmoHeld") == -1 ? "-" : AmmoData.GetInt("AmmoHeld").ToString());
+                }
+            } else {
+                AmmoText = "";
+            }
+
+            
             base.PreUpdate();
         }
     }
